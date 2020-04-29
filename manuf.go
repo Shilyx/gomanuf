@@ -60,7 +60,24 @@ func Search(mac string) string {
     mac = strings.ToUpper(mac)
     mac = strings.Replace(mac, "-", ":", -1)
     mac = strings.Replace(mac, " ", "", -1)
-    mac = strings.TrimSpace(mac)
+
+    if len(mac) != 17 {
+        return ""
+    }
+
+    for i := 0; i < len(mac); i++ {
+        if i%3 == 2 {
+            if mac[i] != ':' {
+                return ""
+            }
+        } else {
+            if (mac[i] >= 'A' && mac[i] <= 'F') || (mac[i] >= '0' && mac[i] <= '9') {
+                continue
+            }
+
+            return ""
+        }
+    }
 
     s := strings.Split(mac, ":")
 
