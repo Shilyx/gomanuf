@@ -44,6 +44,7 @@ func parse(mac, comment string) {
     }
     d[b].(map[uint64]string)[b2uint64(m)] = comment
 }
+
 func b2uint64(sList []string) uint64 {
     var t uint64
     for i, b := range sList {
@@ -56,7 +57,17 @@ func b2uint64(sList []string) uint64 {
 }
 
 func Search(mac string) string {
-    s := strings.Split(strings.Replace(strings.ToUpper(mac), "-", ":", -1), ":")
+    mac = strings.ToUpper(mac)
+    mac = strings.Replace(mac, "-", ":", -1)
+    mac = strings.Replace(mac, " ", "", -1)
+    mac = strings.TrimSpace(mac)
+
+    s := strings.Split(mac, ":")
+
+    if len(s) != 6 {
+        return ""
+    }
+
     bint := b2uint64(s)
     for b := range d {
         k := 48 - b
