@@ -56,7 +56,7 @@ func b2uint64(sList []string) uint64 {
 }
 
 func Search(mac string) string {
-    s := strings.Split(strings.ToUpper(mac) , ":")
+    s := strings.Split(strings.Replace(strings.ToUpper(mac), "-", ":", -1), ":")
     bint := b2uint64(s)
     for b := range d {
         k := 48 - b
