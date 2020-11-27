@@ -8,6 +8,8 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
+
+	"github.com/kardianos/osext"
 )
 
 const hexDigit = "0123456789ABCDEF"
@@ -21,6 +23,23 @@ func init() {
 	if !fileExists(f) {
 		_, file, _, _ := runtime.Caller(0)
 		f = path.Join(path.Dir(file), "manuf")
+	}
+
+	if !fileExists(f) {
+		if exedir, err := osext.ExecutableFolder(); err == nil {
+			for _, appender := range []string{
+				"/manuf",
+				"/common/manuf",
+				"/../manuf",
+				"/../common/manuf",
+			} {
+				f = exedir + appender
+
+				if fileExists(f) {
+					break
+				}
+			}
+		}
 	}
 
 	err := readLine(f, func(s string) {
